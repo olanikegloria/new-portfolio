@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowDown, Download } from "lucide-react"
-import CustomComputerCanvas from "./custom-3d-scene"
+import ComputersCanvas from "./Computers"
 import HeroFallback from "./hero-fallback"
 import ThreeDFallbackMessage from "./3d-fallback-message"
 import { motion } from "framer-motion"
@@ -13,6 +13,14 @@ import AnimatedText from "./animated-text"
 export default function HeroSection() {
   const [isMobile, setIsMobile] = useState(false)
   const [isPreviewEnv, setIsPreviewEnv] = useState(false)
+
+  // Scroll to about section function
+  const scrollToAbout = () => {
+    const aboutSection = document.getElementById('about')
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
   useEffect(() => {
     // Check if we're in a preview environment that doesn't support 3D
@@ -67,12 +75,12 @@ export default function HeroSection() {
             </div>
           </>
         ) : (
-          <div className="w-full h-full">
-            <CustomComputerCanvas isMobile={isMobile} />
+          <div className="w-full h-full lg:ml-[12rem]">
+            <ComputersCanvas isMobile={isMobile} />
           </div>
         )}
       </div>
-      <div className="container mx-auto px-4 z-20 mt-16 relative">
+      <div className="container mx-auto px-4 z-20  relative lg:top-[-110px]">
         <motion.div
           className="max-w-3xl backdrop-blur-sm bg-background/30 p-8 rounded-lg cyber-border"
           initial={{ opacity: 0, y: 50 }}
@@ -160,7 +168,14 @@ export default function HeroSection() {
         animate={{ opacity: 1 }}
         transition={{ delay: 3, duration: 1 }}
       >
-        <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}>
+        <motion.div 
+          animate={{ y: [0, 10, 0] }} 
+          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
+          className="cursor-pointer"
+          onClick={scrollToAbout}
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.9 }}
+        >
           <ArrowDown className="h-6 w-6 text-primary" />
         </motion.div>
       </motion.div>

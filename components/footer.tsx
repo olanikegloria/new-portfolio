@@ -40,7 +40,7 @@ export default function Footer() {
                 </motion.div>
                 <motion.div whileHover={{ y: -5, scale: 1.2 }} transition={{ type: "spring", stiffness: 300 }}>
                   <Link
-                    href="https://linkedin.com"
+                    href="https://linkedin.com/in/olani"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -49,17 +49,7 @@ export default function Footer() {
                     <Linkedin className="h-5 w-5" />
                   </Link>
                 </motion.div>
-                <motion.div whileHover={{ y: -5, scale: 1.2 }} transition={{ type: "spring", stiffness: 300 }}>
-                  <Link
-                    href="https://twitter.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="Twitter"
-                  >
-                    <Twitter className="h-5 w-5" />
-                  </Link>
-                </motion.div>
+                
                 <motion.div whileHover={{ y: -5, scale: 1.2 }} transition={{ type: "spring", stiffness: 300 }}>
                   <Link
                     href="mailto:olanikegloria2020@gmail.com"
@@ -113,7 +103,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Resources</h3>
             <ul className="space-y-2">
               <li>
-                <Button variant="ghost" size="sm" className="p-0 h-auto flex items-center gap-2" asChild>
+                <Button variant="ghost" size="sm" className="p-0 h-auto flex items-center gap-2 justify-start" asChild >
                   <a href="/resume.pdf" download className="text-muted-foreground hover:text-primary transition-colors">
                     <Download className="h-4 w-4" /> Resume
                   </a>

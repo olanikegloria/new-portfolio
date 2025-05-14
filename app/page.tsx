@@ -53,7 +53,7 @@ export default function Home() {
         <HeroSection />
 
         {/* About Section */}
-        <motion.section className="py-20 bg-background" ref={targetRef} style={{ opacity, y }}>
+        <motion.section id="about" className="py-20 bg-background" ref={targetRef} style={{ opacity, y }}>
           <div className="container mx-auto px-4">
             <SectionHeading
               title="About Me"
@@ -69,7 +69,7 @@ export default function Home() {
                 viewport={{ once: true }}
               >
                 <Image
-                  src="/placeholder.svg?height=600&width=600"
+                  src="/home.png"
                   alt="Developer Portrait"
                   width={600}
                   height={600}
@@ -97,8 +97,7 @@ export default function Home() {
                     { icon: <Code className="h-5 w-5 text-primary mr-2" />, text: "Frontend Development" },
                     { icon: <Server className="h-5 w-5 text-primary mr-2" />, text: "Backend Systems" },
                     { icon: <Database className="h-5 w-5 text-primary mr-2" />, text: "Database Design" },
-                    { icon: <Layout className="h-5 w-5 text-primary mr-2" />, text: "UI/UX Design" },
-                  ].map((skill, index) => (
+                                    ].map((skill, index) => (
                     <motion.div
                       key={index}
                       className="flex items-center p-3 rounded-lg bg-secondary/20 hover:bg-secondary/30 transition-colors"
@@ -132,7 +131,7 @@ export default function Home() {
           </div>
         </motion.section>
 
-        {/* Featured Projects Section */}
+        {/* Featured Projects Section
         <motion.section className="py-20 bg-secondary/20" style={{ scale }}>
           <div className="container mx-auto px-4">
             <SectionHeading
@@ -169,7 +168,7 @@ export default function Home() {
               </Button>
             </motion.div>
           </div>
-        </motion.section>
+        </motion.section> */}
 
         {/* Skills Section */}
         <motion.section className="py-20 bg-background">
@@ -246,18 +245,18 @@ export default function Home() {
               {[
                 {
                   text: "Working with this developer was an absolute pleasure. They delivered our e-commerce platform ahead of schedule and exceeded all our expectations with their attention to detail.",
-                  name: "Sarah Johnson",
-                  role: "CEO, Fashion Boutique",
+                  name: "Tajul Afreen",
+                  role: "CEO, Afolawebsolutions",
                 },
                 {
-                  text: "Their technical expertise and problem-solving skills are outstanding. They quickly understood our complex requirements and delivered a robust solution that perfectly met our needs.",
-                  name: "Michael Chen",
-                  role: "CTO, Tech Innovations",
+                  text: "Their technical expertise and problem-solving skills are outstanding. They quickly understood complex requirements and delivered a robust solution that perfectly met needs.",
+                  name: "Okoli Tochi",
+                  role: "collegue at microverse",
                 },
                 {
                   text: "Not only did they build an amazing application for us, but they also took the time to explain their process and ensure we could maintain it going forward. Truly a professional developer.",
-                  name: "Alex Rodriguez",
-                  role: "Product Manager, HealthTech Inc.",
+                  name: "Mr. Dele",
+                  role: "project Manage, Oasis LTD",
                 },
               ].map((testimonial, index) => (
                 <motion.div

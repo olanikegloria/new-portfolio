@@ -1,8 +1,7 @@
 "use client"
 
-import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { motion } from "framer-motion"
@@ -15,6 +14,7 @@ interface ProjectCardProps {
   tags: string[]
   animate?: boolean
   projectType?: "personal" | "client"
+  link?: string
 }
 
 export default function ProjectCard({
@@ -25,6 +25,7 @@ export default function ProjectCard({
   tags,
   animate = false,
   projectType,
+  link,
 }: ProjectCardProps) {
   const item = {
     hidden: { opacity: 0, y: 20 },
@@ -80,12 +81,19 @@ export default function ProjectCard({
           </div>
         </CardContent>
         <CardFooter className="p-5 pt-0">
-          <Link
-            href={`/projects/${id}`}
-            className="inline-flex items-center text-primary hover:text-primary/80 text-sm font-medium group/link"
-          >
-            View Project <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/link:translate-x-1" />
-          </Link>
+          {link ? (
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-primary hover:text-primary/80 text-sm font-medium group/link"
+            >
+              Visit Project{" "}
+              <ExternalLink className="ml-1 h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+            </a>
+          ) : (
+            <span className="text-sm text-muted-foreground">Link unavailable</span>
+          )}
         </CardFooter>
       </Card>
     </motion.div>

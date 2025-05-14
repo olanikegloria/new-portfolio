@@ -6,55 +6,119 @@ import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { Filter } from "lucide-react"
 
-// Projects data
+// Projects data with real projects
 const projects = [
+  // Client Projects
   {
-    id: "ecommerce-platform",
-    title: "E-Commerce Platform",
-    description: "A full-stack e-commerce solution with payment processing and inventory management.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["React", "Node.js", "MongoDB", "Stripe"],
+    id: "programs-portal",
+    title: "Programs Portal",
+    description: "Administrative portal for managing programs and applications with user authentication and dashboard.",
+    image: "/program.png",
+    tags: ["React", "Next.js", "TypeScript", "SQL", "CSS"],
     type: "client",
+    link: "https://programsportal.jjrsf.org/admin/login",
   },
   {
-    id: "ai-chatbot",
-    title: "AI Chatbot Assistant",
-    description: "An intelligent chatbot powered by machine learning to provide customer support.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["Python", "TensorFlow", "NLP", "API"],
+    id: "riskgratis-landing",
+    title: "RiskGratis Landing",
+    description: "Corporate landing page for RiskGratis with modern design and responsive layout.",
+    image: "/riskgratis.png",
+    tags: ["Python", "JavaScript", "HTML", "CSS"],
     type: "client",
+    link: "https://landing.riskgratis.xyz/",
   },
   {
-    id: "data-visualization",
-    title: "Data Visualization Dashboard",
-    description: "Interactive dashboard for visualizing complex datasets with real-time updates.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["D3.js", "React", "GraphQL", "AWS"],
-    type: "personal",
-  },
-  {
-    id: "mobile-fitness-app",
-    title: "Mobile Fitness App",
-    description: "A cross-platform mobile application for tracking workouts and nutrition.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["React Native", "Firebase", "Redux", "Health API"],
-    type: "personal",
-  },
-  {
-    id: "blockchain-wallet",
-    title: "Blockchain Wallet",
-    description: "A secure digital wallet for managing cryptocurrency transactions.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["Web3.js", "Solidity", "Ethereum", "Security"],
-    type: "personal",
-  },
-  {
-    id: "social-media-platform",
-    title: "Social Media Platform",
-    description: "A feature-rich social networking platform with real-time messaging.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["React", "Socket.io", "Express", "MongoDB"],
+    id: "cla-jjrsf",
+    title: "CLA JJRSF",
+    description: "Platform for managing and showcasing community leadership activities and initiatives.",
+    image: "/jjrsf.png",
+    tags: ["React", "Next.js", "JavaScript", "CSS"],
     type: "client",
+    link: "https://cla.jjrsf.org/",
+  },
+  {
+    id: "starlink-solutions",
+    title: "Starlink Solutions Portal",
+    description: "User portal for Starlink Solutions with authentication and service management features.",
+    image: "/starlink.png",
+    tags: ["React", "TypeScript", "SQL", "CSS"],
+    type: "client",
+    link: "https://portal.starlinksolutions.ng/login",
+  },
+  {
+    id: "academic-connect",
+    title: "Academic Connect",
+    description: "Platform connecting students and educators with resources and collaborative tools.",
+    image: "/academic.png",
+    tags: ["React", "Next.js", "TypeScript", "CSS"],
+    type: "client",
+    link: "https://academic-connect.vercel.app/",
+  },
+  {
+    id: "jjrsf-event-manager",
+    title: "JJRSF Event Manager",
+    description: "Event management system for scheduling, registration, and attendee tracking.",
+    image: "/event.png",
+    tags: ["React", "JavaScript", "HTML", "CSS"],
+    type: "client",
+    link: "https://jjrsf-event-manager-guest.vercel.app/",
+  },
+  {
+    id: "creative-builders",
+    title: "Creative Builders",
+    description: "Corporate website for a construction company with portfolio and service showcase.",
+    image: "/creative.png",
+    tags: ["React", "Next.js", "JavaScript", "CSS"],
+    type: "client",
+    link: "https://www.creativebuilders.com.ng/",
+  },
+  {
+    id: "learning-platform",
+    title: "Learning Platform",
+    description: "Educational platform with course management, progress tracking, and interactive content.",
+    image: "/blessing.png",
+    tags: ["React", "Next.js", "TypeScript", "CSS"],
+    type: "client",
+    link: "https://learning-platform-ashy.vercel.app/",
+  },
+
+  // Personal Projects
+  {
+    id: "bucket-list",
+    title: "Bucket List App",
+    description: "App for creating and sharing bucket lists with friends to make and track memories together.",
+    image: "/bestie.png",
+    tags: ["React", "Next.js", "JavaScript", "CSS"],
+    type: "personal",
+    link: "https://bucket-list-ebon.vercel.app",
+  },
+  {
+    id: "volume-booster",
+    title: "Volume Booster Extension",
+    description:
+      "Browser extension that boosts audio volume and implements noise cancellation for better sound quality.",
+    image: "/vol.png",
+    tags: ["JavaScript", "HTML", "CSS"],
+    type: "personal",
+    link: "https://github.com/olanikegloria/volume-booster-extension",
+  },
+  {
+    id: "apple-catcher-game",
+    title: "Apple Catcher Game",
+    description: "Interactive game built with Phaser.js where players catch falling apples for points.",
+    image: "/apple.png",
+    tags: ["JavaScript", "Phaser.js", "HTML", "CSS"],
+    type: "personal",
+    link: "https://js-game-e8rl.onrender.com/",
+  },
+  {
+    id: "url-shortener",
+    title: "URL Shortener",
+    description: "Web application that creates shortened URLs for easier sharing and tracking.",
+    image: "/url.png",
+    tags: ["JavaScript", "Node.js", "HTML", "CSS"],
+    type: "personal",
+    link: "https://github.com/olanikegloria/urlshortener",
   },
 ]
 
@@ -122,8 +186,8 @@ export default function ProjectsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Explore my portfolio of projects showcasing my skills in web development, mobile applications, data
-            visualization, and more.
+            Explore my portfolio of client and personal projects showcasing my skills in web development, mobile
+            applications, and interactive experiences.
           </motion.p>
         </div>
       </section>

@@ -17,57 +17,57 @@ const certifications = [
     issuer: "Microverse",
     date: "March 2024",
     image: "/placeholder.svg?height=400&width=400",
-    link: "https://www.credential.net/full-stack-web-development",
+    link: "https://drive.google.com/file/d/1Xl8z6N33gxbd-SVCt_2hITPUEx99g0E0/view?usp=drive_link",
     skills: ["JavaScript", "React", "Ruby on Rails", "SQL", "HTML/CSS"],
     relatedSkills: ["JavaScript", "React.js", "Ruby on Rails", "SQL", "HTML/CSS"],
   },
   {
     id: "cert2",
-    title: "Node.js Development",
+    title: "javascript certificate",
     issuer: "NIIT Limited",
     date: "June 2024",
     image: "/placeholder.svg?height=400&width=400",
-    link: "https://www.credential.net/nodejs-development",
+    link: "https://drive.google.com/file/d/1NK0JfR1HszZa7D_joDCKyBDbEwVe7itx/view?usp=drive_link",
     skills: ["Node.js", "Express", "MongoDB", "REST APIs", "Authentication"],
     relatedSkills: ["Node.js", "Express", "MongoDB"],
   },
   {
     id: "cert3",
-    title: "React Native Mobile Development",
+    title: "React",
     issuer: "Delight Olga",
     date: "May 2025",
     image: "/placeholder.svg?height=400&width=400",
-    link: "https://www.credential.net/react-native",
+    link: "https://drive.google.com/file/d/1qguytHdb3eKGSqjm_pnYGVRMp8Z0xu3M/view?usp=drive_link",
     skills: ["React Native", "Mobile UI/UX", "Redux", "API Integration", "Mobile Testing"],
     relatedSkills: ["React Native"],
   },
   {
     id: "cert4",
-    title: "Odoo ERP Development",
+    title: "ruby",
     issuer: "Riskgratis Technologies",
     date: "October 2024",
     image: "/placeholder.svg?height=400&width=400",
-    link: "https://www.credential.net/odoo-development",
+    link: "https://drive.google.com/file/d/14KOT4H8DxlqH2geEwkStwGr6SxiCzZDT/view?usp=drive_link",
     skills: ["Odoo", "Python", "XML", "Business Process Modeling", "ERP Systems"],
     relatedSkills: ["Python", "Odoo"],
   },
   {
     id: "cert5",
-    title: "TypeScript Advanced Concepts",
+    title: "rails",
     issuer: "Microverse",
     date: "January 2024",
     image: "/placeholder.svg?height=400&width=400",
-    link: "https://www.credential.net/typescript-advanced",
+    link: "https://drive.google.com/file/d/1ApeqbcML_E8EQmlPJ32AqITKFX1yIu-p/view?usp=drive_link",
     skills: ["TypeScript", "Type Systems", "Generics", "Advanced Types", "Design Patterns"],
     relatedSkills: ["TypeScript"],
   },
   {
     id: "cert6",
-    title: "Next.js & Modern Web Development",
+    title: "database",
     issuer: "Delight Olga",
     date: "April 2025",
     image: "/placeholder.svg?height=400&width=400",
-    link: "https://www.credential.net/nextjs-development",
+    link: "https://drive.google.com/file/d/1ApeqbcML_E8EQmlPJ32AqITKFX1yIu-p/view?usp=drive_link",
     skills: ["Next.js", "SSR", "Static Generation", "API Routes", "Performance Optimization"],
     relatedSkills: ["Next.js"],
   },
@@ -92,7 +92,7 @@ const skills: Skill[] = [
     icon: <Code />,
     color: "#f7df1e",
     hasCertification: true,
-    certificationId: "cert1",
+    certificationId: "cert2",
   },
   {
     name: "TypeScript",
@@ -100,18 +100,15 @@ const skills: Skill[] = [
     category: "Languages",
     icon: <Code />,
     color: "#3178c6",
-    hasCertification: true,
-    certificationId: "cert5",
   },
-  { name: "Ruby", level: 4, category: "Languages", icon: <Code />, color: "#cc342d" },
+  { name: "Ruby", level: 4, category: "Languages", icon: <Code />,  hasCertification: true, certificationId: "cert4", color: "#cc342d" },
   {
     name: "Python",
     level: 4,
     category: "Languages",
     icon: <Code />,
     color: "#3776ab",
-    hasCertification: true,
-    certificationId: "cert4",
+
   },
   {
     name: "HTML/CSS",
@@ -129,7 +126,7 @@ const skills: Skill[] = [
     icon: <Database />,
     color: "#336791",
     hasCertification: true,
-    certificationId: "cert1",
+    certificationId: "cert6",
   },
 
   // Frameworks & Libraries
@@ -140,7 +137,7 @@ const skills: Skill[] = [
     icon: <Code />,
     color: "#61dafb",
     hasCertification: true,
-    certificationId: "cert1",
+    certificationId: "cert3",
   },
   {
     name: "Next.js",
@@ -148,8 +145,7 @@ const skills: Skill[] = [
     category: "Frameworks",
     icon: <Globe />,
     color: "#000000",
-    hasCertification: true,
-    certificationId: "cert6",
+   
   },
   {
     name: "Node.js",
@@ -174,8 +170,6 @@ const skills: Skill[] = [
     category: "Frameworks",
     icon: <Code />,
     color: "#61dafb",
-    hasCertification: true,
-    certificationId: "cert3",
   },
   {
     name: "Ruby on Rails",
@@ -184,7 +178,7 @@ const skills: Skill[] = [
     icon: <Code />,
     color: "#cc0000",
     hasCertification: true,
-    certificationId: "cert1",
+    certificationId: "cert5",
   },
 
   // Databases
@@ -194,8 +188,6 @@ const skills: Skill[] = [
     category: "Databases",
     icon: <Database />,
     color: "#47a248",
-    hasCertification: true,
-    certificationId: "cert2",
   },
   { name: "PostgreSQL", level: 3, category: "Databases", icon: <Database />, color: "#336791" },
 
@@ -310,7 +302,7 @@ export default function SkillsShowcase() {
                         : "Beginner"}
                 </motion.div>
 
-                {skill.hasCertification && (
+                {skill.hasCertification && skill.certificationId && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{
@@ -324,9 +316,15 @@ export default function SkillsShowcase() {
                       variant="outline"
                       size="sm"
                       className="text-xs gap-1"
-                      onClick={() => skill.certificationId && handleViewCertification(skill.certificationId)}
+                      asChild
                     >
-                      <Award className="h-3 w-3" /> View Certification
+                      <a 
+                        href={certifications.find(cert => cert.id === skill.certificationId)?.link || "#"}
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        <Award className="h-3 w-3" /> View Certification
+                      </a>
                     </Button>
                   </motion.div>
                 )}

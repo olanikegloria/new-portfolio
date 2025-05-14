@@ -14,9 +14,11 @@ interface Experience {
   skills: string[]
   type: "work" | "education" | "project"
   color?: string
+  startYear?: number // Added for sorting
 }
 
-const experiences: Experience[] = [
+// Update the experiencesData array to include Talksay experience
+const experiencesData: Experience[] = [
   {
     title: "Full Stack Developer",
     company: "Riskgratis Technologies Limited",
@@ -26,6 +28,7 @@ const experiences: Experience[] = [
     skills: ["Odoo", "Python", "JavaScript", "Web Development", "Mobile Development"],
     type: "work",
     color: "#9d4edd",
+    startYear: 2024,
   },
   {
     title: "Software Engineer",
@@ -36,6 +39,7 @@ const experiences: Experience[] = [
     skills: ["Frontend Development", "API Integration", "Ruby on Rails", "UI/UX"],
     type: "work",
     color: "#c77dff",
+    startYear: 2025,
   },
   {
     title: "Backend Engineer",
@@ -46,6 +50,7 @@ const experiences: Experience[] = [
     skills: ["Node.js", "Backend Development", "DevTools", "Performance Optimization"],
     type: "work",
     color: "#7b2cbf",
+    startYear: 2022,
   },
   {
     title: "Code Reviewer",
@@ -56,8 +61,23 @@ const experiences: Experience[] = [
     skills: ["Next.js", "TypeScript", "Ruby on Rails", "Code Review", "Agile"],
     type: "work",
     color: "#5a189a",
+    startYear: 2023,
+  },
+  {
+    title: "Software Tester",
+    company: "Talksay",
+    period: "Sept 2021 – Jan 2023",
+    description:
+      "Conducted comprehensive testing of the Talksay app across platforms, reducing user-reported issues by 30%.",
+    skills: ["Software Testing", "Bug Tracking", "Quality Assurance", "Cross-platform Testing", "Collaboration"],
+    type: "work",
+    color: "#3a0ca3",
+    startYear: 2021,
   },
 ]
+
+// Sort experiences from oldest to newest
+const experiences = [...experiencesData].sort((a, b) => (a.startYear || 0) - (b.startYear || 0))
 
 export default function ProfessionalJourney() {
   const controls = useAnimation()
@@ -214,91 +234,147 @@ export default function ProfessionalJourney() {
           />
         </motion.div>
 
-        {/* Interactive timeline navigation */}
+        {/* Interactive timeline navigation - Creative & Mobile-friendly */}
         <div className="flex justify-center mb-16">
-          <div className="relative w-full max-w-3xl h-20 flex items-center">
-            {/* Timeline track */}
-            <div className="absolute w-full h-1 bg-secondary/30 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full"
-                style={{
-                  width: `${((activeIndex + 1) / experiences.length) * 100}%`,
-                  background: `linear-gradient(to right, ${experiences[activeIndex].color}, ${
-                    experiences[activeIndex].color + "80"
-                  })`,
-                }}
-                transition={{ duration: 0.5 }}
-              />
+          <div className="relative w-full max-w-3xl">
+            {/* Mobile timeline - vertical dots for small screens */}
+            <div className="md:hidden flex flex-col items-center space-y-4 mb-8">
+              {experiences.map((exp, index) => (
+                <div key={`mobile-timeline-${index}`} className="flex items-center w-full">
+                  <div
+                    className={`w-full h-1 ${index === 0 ? "opacity-0" : ""}`}
+                    style={{
+                      background:
+                        index <= activeIndex
+                          ? `linear-gradient(to right, ${experiences[Math.max(0, index - 1)].color}, ${experiences[index].color})`
+                          : "var(--secondary)",
+                    }}
+                  />
+                  <button
+                    className={`relative flex-shrink-0 w-10 h-10 rounded-full border-2 transition-all duration-300 z-10 flex items-center justify-center ${
+                      index <= activeIndex ? "bg-primary/20 border-primary" : "bg-background border-secondary"
+                    }`}
+                    style={{
+                      borderColor: exp.color,
+                      backgroundColor: index <= activeIndex ? exp.color + "20" : "transparent",
+                    }}
+                    onClick={() => {
+                      setIsAutoPlaying(false)
+                      setDirection(index > activeIndex ? 1 : -1)
+                      setActiveIndex(index)
+                    }}
+                  >
+                    <span className="text-xs font-bold" style={{ color: exp.color }}>
+                      {exp.startYear}
+                    </span>
+                    {index <= activeIndex && (
+                      <motion.div
+                        className="absolute inset-0 rounded-full"
+                        style={{ backgroundColor: exp.color + "20" }}
+                        animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
+                        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatDelay: 1 }}
+                      />
+                    )}
+                  </button>
+                  <div
+                    className={`w-full h-1 ${index === experiences.length - 1 ? "opacity-0" : ""}`}
+                    style={{
+                      background:
+                        index < activeIndex
+                          ? `linear-gradient(to right, ${exp.color}, ${experiences[Math.min(experiences.length - 1, index + 1)].color})`
+                          : "var(--secondary)",
+                    }}
+                  />
+                </div>
+              ))}
             </div>
 
-            {/* Timeline nodes */}
-            {experiences.map((_, index) => (
-              <motion.button
-                key={index}
-                className={`absolute transform -translate-y-1/2 w-6 h-6 rounded-full border-2 transition-all duration-300 z-10 ${
-                  index <= activeIndex ? "bg-primary border-primary" : "bg-background border-secondary"
-                }`}
-                style={{
-                  left: `${(index / (experiences.length - 1)) * 100}%`,
-                  backgroundColor: index <= activeIndex ? experiences[index].color : "transparent",
-                  borderColor: experiences[index].color,
-                }}
-                onClick={() => {
-                  setIsAutoPlaying(false)
-                  setDirection(index > activeIndex ? 1 : -1)
-                  setActiveIndex(index)
-                }}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                {index <= activeIndex && (
-                  <motion.div
-                    className="absolute inset-0 rounded-full"
-                    style={{ backgroundColor: experiences[index].color + "30" }}
-                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
-                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatDelay: 1 }}
-                  />
-                )}
-              </motion.button>
-            ))}
+            {/* Desktop timeline - horizontal for larger screens */}
+            <div className="hidden md:block relative h-20 flex items-center">
+              {/* Timeline track */}
+              <div className="absolute w-full h-1 bg-secondary/30 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full"
+                  style={{
+                    width: `${((activeIndex + 1) / experiences.length) * 100}%`,
+                    background: `linear-gradient(to right, ${experiences[0].color}, ${experiences[activeIndex].color})`,
+                  }}
+                  transition={{ duration: 0.5 }}
+                />
+              </div>
 
-            {/* Year labels */}
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={`year-${index}`}
-                className="absolute text-xs font-medium"
-                style={{
-                  left: `${(index / (experiences.length - 1)) * 100}%`,
-                  bottom: "-24px",
-                  transform: "translateX(-50%)",
-                  color: index === activeIndex ? experiences[index].color : "var(--muted-foreground)",
-                }}
-                animate={{
-                  scale: index === activeIndex ? 1.1 : 1,
-                  fontWeight: index === activeIndex ? "bold" : "normal",
-                }}
-              >
-                <span className="font-syncopate">{exp.period.split("–")[0].trim()}</span>
-              </motion.div>
-            ))}
+              {/* Timeline nodes */}
+              {experiences.map((exp, index) => (
+                <motion.button
+                  key={index}
+                  className={`absolute transform -translate-y-1/2 w-8 h-8 rounded-full border-2 transition-all duration-300 z-10 flex items-center justify-center ${
+                    index <= activeIndex ? "bg-primary/20 border-primary" : "bg-background border-secondary"
+                  }`}
+                  style={{
+                    left: `${(index / (experiences.length - 1)) * 100}%`,
+                    backgroundColor: index <= activeIndex ? exp.color + "20" : "transparent",
+                    borderColor: exp.color,
+                  }}
+                  onClick={() => {
+                    setIsAutoPlaying(false)
+                    setDirection(index > activeIndex ? 1 : -1)
+                    setActiveIndex(index)
+                  }}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <span className="text-xs font-bold" style={{ color: exp.color }}>
+                    {exp.startYear}
+                  </span>
+                  {index <= activeIndex && (
+                    <motion.div
+                      className="absolute inset-0 rounded-full"
+                      style={{ backgroundColor: exp.color + "30" }}
+                      animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
+                      transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatDelay: 1 }}
+                    />
+                  )}
+                </motion.button>
+              ))}
 
-            {/* Navigation buttons */}
-            <Button
-              variant="outline"
-              size="icon"
-              className="absolute -left-12 top-1/2 transform -translate-y-1/2 rounded-full hover:bg-primary/20 hover:text-primary"
-              onClick={handlePrev}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="absolute -right-12 top-1/2 transform -translate-y-1/2 rounded-full hover:bg-primary/20 hover:text-primary"
-              onClick={handleNext}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+              {/* Year labels */}
+              {experiences.map((exp, index) => (
+                <motion.div
+                  key={`year-${index}`}
+                  className="absolute text-xs font-medium"
+                  style={{
+                    left: `${(index / (experiences.length - 1)) * 100}%`,
+                    bottom: "-24px",
+                    transform: "translateX(-50%)",
+                    color: index === activeIndex ? exp.color : "var(--muted-foreground)",
+                  }}
+                  animate={{
+                    scale: index === activeIndex ? 1.1 : 1,
+                    fontWeight: index === activeIndex ? "bold" : "normal",
+                  }}
+                >
+                  <span className="font-syncopate">{exp.period.split("–")[0].trim()}</span>
+                </motion.div>
+              ))}
+
+              {/* Navigation buttons */}
+              <Button
+                variant="outline"
+                size="icon"
+                className="absolute -left-8 sm:-left-12 top-1/2 transform -translate-y-1/2 rounded-full hover:bg-primary/20 hover:text-primary"
+                onClick={handlePrev}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="absolute -right-8 sm:-right-12 top-1/2 transform -translate-y-1/2 rounded-full hover:bg-primary/20 hover:text-primary"
+                onClick={handleNext}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -342,10 +418,10 @@ export default function ProfessionalJourney() {
                         />
 
                         <div className="relative z-10">
-                          <div className="flex items-start justify-between mb-4">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
                             <div>
                               <motion.h3
-                                className="text-2xl font-bold mb-1 font-syncopate"
+                                className="text-xl sm:text-2xl font-bold mb-1 font-syncopate"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.3, duration: 0.5 }}
@@ -366,7 +442,7 @@ export default function ProfessionalJourney() {
                               </motion.div>
                             </div>
                             <motion.div
-                              className="flex items-center px-3 py-1 rounded-full"
+                              className="flex items-center px-3 py-1 rounded-full self-start"
                               initial={{ opacity: 0, x: 20 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 0.4, duration: 0.5 }}
@@ -559,32 +635,34 @@ export default function ProfessionalJourney() {
                           })}
                         </div>
 
-                        {/* Company name in a decorative element - CENTERED under the rings */}
-                        <motion.div
-                          className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-background/80 backdrop-blur-sm px-6 py-2 rounded-full border-2 whitespace-nowrap text-center"
-                          style={{
-                            borderColor: exp.color || "#9d4edd",
-                            boxShadow: `0 5px 15px -5px ${exp.color}80`,
-                          }}
-                          initial={{ y: 20, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: 0.7, duration: 0.5 }}
-                        >
-                          <motion.span
-                            className="font-medium font-syncopate"
-                            style={{ color: exp.color }}
-                            animate={{
-                              textShadow: [
-                                `0 0 5px ${exp.color}40`,
-                                `0 0 10px ${exp.color}60`,
-                                `0 0 5px ${exp.color}40`,
-                              ],
+                        {/* Company name in a decorative element - FIXED CENTERED position with margin-top */}
+                        <div className="absolute w-full flex justify-center" style={{ bottom: "-30px" }}>
+                          <motion.div
+                            className="bg-background/80 backdrop-blur-sm px-6 py-2 rounded-full border-2 whitespace-nowrap text-center mt-6"
+                            style={{
+                              borderColor: exp.color || "#9d4edd",
+                              boxShadow: `0 5px 15px -5px ${exp.color}80`,
                             }}
-                            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.7, duration: 0.5 }}
                           >
-                            {exp.company}
-                          </motion.span>
-                        </motion.div>
+                            <motion.span
+                              className="font-medium font-syncopate"
+                              style={{ color: exp.color }}
+                              animate={{
+                                textShadow: [
+                                  `0 0 5px ${exp.color}40`,
+                                  `0 0 10px ${exp.color}60`,
+                                  `0 0 5px ${exp.color}40`,
+                                ],
+                              }}
+                              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                            >
+                              {exp.company}
+                            </motion.span>
+                          </motion.div>
+                        </div>
                       </motion.div>
                     </div>
                   </motion.div>
@@ -593,7 +671,7 @@ export default function ProfessionalJourney() {
           </AnimatePresence>
         </div>
 
-        {/* Experience indicators */}
+        {/* Experience indicators - Responsive */}
         <div className="flex justify-center mt-12 space-x-2">
           {experiences.map((_, index) => (
             <motion.button
@@ -621,6 +699,25 @@ export default function ProfessionalJourney() {
           ))}
         </div>
       </motion.div>
+      {/* Mobile navigation buttons */}
+      <div className="flex justify-center mt-8 md:hidden">
+        <div className="flex gap-4">
+          <Button
+            variant="outline"
+            onClick={handlePrev}
+            className="flex items-center gap-2 hover:bg-primary/20 hover:text-primary"
+          >
+            <ChevronLeft className="h-4 w-4" /> Previous
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleNext}
+            className="flex items-center gap-2 hover:bg-primary/20 hover:text-primary"
+          >
+            Next <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }

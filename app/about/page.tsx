@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import Image from "next/image"
 import SectionHeading from "@/components/section-heading"
 import { Card, CardContent } from "@/components/ui/card"
@@ -28,6 +29,16 @@ const education = [
 ]
 
 export default function AboutPage() {
+  // Force a re-render when the component mounts to fix blank page issue
+  useEffect(() => {
+    // Force a re-render by updating a state or using forceUpdate
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event("resize"))
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <div className="pt-20">
       {/* About Hero */}
@@ -52,9 +63,8 @@ export default function AboutPage() {
               </p>
               <motion.div className="mt-6" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <ConfettiButton>
-                  <a href="/resume.pdf" download className="inline-flex items-center gap-2">
-                    <Download className="h-4 w-4" /> 
-                    <span>Download My Resume</span>
+                  <a href="/resume.pdf" download className="flex items-center gap-2">
+                    <Download className="h-4 w-4" /> Download My Resume
                   </a>
                 </ConfettiButton>
               </motion.div>
@@ -67,7 +77,7 @@ export default function AboutPage() {
             >
               <div className="cyber-border p-1 rounded-lg">
                 <Image
-                  src="/placeholder.svg?height=600&width=600"
+                  src="/about.png"
                   alt="Developer Portrait"
                   width={600}
                   height={600}

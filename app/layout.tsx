@@ -4,7 +4,6 @@ import "./globals.css"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
-import PageTransition from "@/components/page-transition"
 import BackgroundParticles from "@/components/background-particles"
 import MouseTrailEffect from "@/components/mouse-trail-effect"
 
@@ -53,7 +52,6 @@ const gruppo = Gruppo({
 export const metadata = {
   title: "Olanike | Developer Portfolio",
   description: "Professional portfolio for a software developer with 3+ years of experience",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({ children }) {
@@ -72,9 +70,7 @@ export default function RootLayout({ children }) {
             <BackgroundParticles />
             <MouseTrailEffect />
             <Navbar />
-            <main className="flex-grow">
-              <PageTransition>{children}</PageTransition>
-            </main>
+            <main className="flex-grow">{children}</main>
             <Footer />
           </div>
         </ThemeProvider>

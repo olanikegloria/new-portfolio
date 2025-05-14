@@ -2,60 +2,102 @@
 
 import { Suspense, useRef, useState, useEffect } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
-import { OrbitControls, Environment } from "@react-three/drei"
+import { OrbitControls, Environment, useTexture } from "@react-three/drei"
 import CanvasLoader from "./loader"
-import * as THREE from "three" // Import THREE
+import * as THREE from "three"
 
-// Create a code texture for the monitor
+// Create a code texture for the monitor with VSCode-like appearance
 const CodeScreen = () => {
-  // Create a dynamic canvas texture with code
-  const canvasRef = useRef()
   const [texture, setTexture] = useState(null)
-
+  
+  // Load a pre-rendered code editor texture that matches the screenshot
+  const codeTexture = useTexture("/code-screen.png", (loadedTexture) => {
+    loadedTexture.minFilter = THREE.LinearFilter
+    loadedTexture.magFilter = THREE.LinearFilter
+    loadedTexture.needsUpdate = true
+    setTexture(loadedTexture)
+  })
+  
+  // If no pre-rendered texture is available, create one dynamically
   useEffect(() => {
-    // Create a canvas to draw the code screen
-    const canvas = document.createElement("canvas")
-    canvas.width = 1024
-    canvas.height = 512
-    const ctx = canvas.getContext("2d")
+    if (!texture) {
+      // Create a canvas to draw the code screen
+      const canvas = document.createElement("canvas")
+      canvas.width = 1024
+      canvas.height = 512
+      const ctx = canvas.getContext("2d")
 
-    // Fill background
-    ctx.fillStyle = "#1e1e1e" // VS Code dark theme background
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
+      // Fill background - VSCode dark theme
+      ctx.fillStyle = "#1e1e1e"
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    // Draw code lines
-    const drawCodeLine = (text, x, y, color) => {
-      ctx.font = "16px monospace"
-      ctx.fillStyle = color
-      ctx.fillText(text, x, y)
+      // Draw the VSCode interface elements
+      // Explorer sidebar
+      ctx.fillStyle = "#252526"
+      ctx.fillRect(0, 0, 200, canvas.height)
+      
+      // Top bar
+      ctx.fillStyle = "#333333"
+      ctx.fillRect(200, 0, canvas.width-200, 30)
+
+      // Draw code lines with syntax highlighting
+      const drawCodeLine = (text, x, y, color) => {
+        ctx.font = "14px 'Consolas', monospace"
+        ctx.fillStyle = color
+        ctx.fillText(text, x, y)
+      }
+
+      // Import statements - blue
+      drawCodeLine('import React from "react";', 220, 40, "#569cd6")
+      drawCodeLine('import { motion } from "framer-motion";', 220, 60, "#569cd6")
+      drawCodeLine('import * as THREE from "three";', 220, 80, "#569cd6")
+      
+      // Empty line
+      drawCodeLine("", 220, 100, "#fff")
+      
+      // Component declaration - yellow
+      drawCodeLine("const AnimatedComponent = () => {", 220, 120, "#dcdcaa")
+      
+      // useState hook - white and blue
+      drawCodeLine("  const [isVisible, setIsVisible] = useState(false);", 220, 140, "#fff")
+      drawCodeLine("", 220, 160, "#fff")
+      
+      // useEffect - purple
+      drawCodeLine("  useEffect(() => {", 220, 180, "#c586c0")
+      drawCodeLine("    setIsVisible(true);", 220, 200, "#fff")
+      drawCodeLine("    document.title = 'My Portfolio';", 220, 220, "#fff")
+      drawCodeLine("  }, []);", 220, 240, "#fff")
+      drawCodeLine("", 220, 260, "#fff")
+      
+      // Return statement
+      drawCodeLine("  return (", 220, 280, "#fff")
+      drawCodeLine("    <motion.div", 220, 300, "#9cdcfe")
+      drawCodeLine('      className="container"', 220, 320, "#ce9178")
+      drawCodeLine("      initial={{ opacity: 0 }}", 220, 340, "#ce9178")
+      drawCodeLine("      animate={{ opacity: isVisible ? 1 : 0 }}", 220, 360, "#ce9178")
+      drawCodeLine("      transition={{ duration: 0.5 }}", 220, 380, "#ce9178")
+      drawCodeLine("    >", 220, 400, "#9cdcfe")
+      drawCodeLine("      <h1>Welcome to my portfolio</h1>", 220, 420, "#fff")
+      drawCodeLine("    </motion.div>", 220, 440, "#9cdcfe")
+      drawCodeLine("  );", 220, 460, "#fff")
+      drawCodeLine("};", 220, 480, "#fff")
+      
+      // Terminal output at bottom
+      ctx.fillStyle = "#1e1e3f"
+      ctx.fillRect(0, canvas.height - 80, canvas.width, 80)
+      ctx.fillStyle = "#cccccc"
+      ctx.font = "12px 'Consolas', monospace"
+      ctx.fillText("$ npm run dev", 10, canvas.height - 60)
+      ctx.fillStyle = "#88ff88"
+      ctx.fillText("> portfolio@0.1.0 dev", 10, canvas.height - 40)
+      ctx.fillText("> next dev", 10, canvas.height - 20)
+
+      const newTexture = new THREE.CanvasTexture(canvas)
+      newTexture.minFilter = THREE.LinearFilter
+      newTexture.magFilter = THREE.LinearFilter
+      setTexture(newTexture)
     }
-
-    // Draw some code lines with syntax highlighting
-    drawCodeLine('import React from "react";', 20, 40, "#569cd6")
-    drawCodeLine('import { motion } from "framer-motion";', 20, 70, "#569cd6")
-    drawCodeLine("", 20, 100, "#fff")
-    drawCodeLine("const AnimatedComponent = () => {", 20, 130, "#dcdcaa")
-    drawCodeLine("  const [isVisible, setIsVisible] = useState(false);", 20, 160, "#fff")
-    drawCodeLine("", 20, 190, "#fff")
-    drawCodeLine("  useEffect(() => {", 20, 220, "#c586c0")
-    drawCodeLine("    setIsVisible(true);", 20, 250, "#fff")
-    drawCodeLine("  }, []);", 20, 280, "#fff")
-    drawCodeLine("", 20, 310, "#fff")
-    drawCodeLine("  return (", 20, 340, "#fff")
-    drawCodeLine("    <motion.div", 20, 370, "#9cdcfe")
-    drawCodeLine("      initial={{ opacity: 0 }}", 20, 400, "#ce9178")
-    drawCodeLine("      animate={{ opacity: isVisible ? 1 : 0 }}", 20, 430, "#ce9178")
-    drawCodeLine("      transition={{ duration: 0.5 }}", 20, 460, "#ce9178")
-    drawCodeLine("    >", 20, 490, "#9cdcfe")
-
-    // Create a new texture from the canvas
-    const newTexture = new THREE.CanvasTexture(canvas)
-    setTexture(newTexture)
-
-    return () => {
-      newTexture.dispose()
-    }
-  }, [])
+  }, [texture])
 
   if (!texture) return null
 
@@ -67,7 +109,7 @@ const CodeScreen = () => {
   )
 }
 
-// Create RGB fan component with customizable colors
+// Create RGB fan component with the purple color scheme from the image
 const RGBFan = ({ position, rotation = [0, 0, 0], speed = 0.01, colors = ["#9d4edd", "#c77dff", "#7b2cbf"] }) => {
   const fan = useRef()
   const ring = useRef()
@@ -81,9 +123,8 @@ const RGBFan = ({ position, rotation = [0, 0, 0], speed = 0.01, colors = ["#9d4e
       // Cycle through colors
       const t = (1 + Math.sin(state.clock.getElapsedTime() * 0.5)) / 2
       const colorIndex = Math.floor((state.clock.getElapsedTime() * 0.2) % colors.length)
-      const nextColorIndex = (colorIndex + 1) % colors.length
-
       ring.current.material.emissive.set(colors[colorIndex])
+      ring.current.material.emissiveIntensity = 2 + Math.sin(state.clock.getElapsedTime() * 2) * 0.5
     }
   })
 
@@ -92,7 +133,7 @@ const RGBFan = ({ position, rotation = [0, 0, 0], speed = 0.01, colors = ["#9d4e
       {/* Fan ring */}
       <mesh ref={ring}>
         <torusGeometry args={[0.4, 0.05, 16, 32]} />
-        <meshStandardMaterial color="#333333" emissive={colors[0]} emissiveIntensity={1} toneMapped={false} />
+        <meshStandardMaterial color="#333333" emissive={colors[0]} emissiveIntensity={2} toneMapped={false} />
       </mesh>
 
       {/* Fan blades */}
@@ -110,7 +151,7 @@ const RGBFan = ({ position, rotation = [0, 0, 0], speed = 0.01, colors = ["#9d4e
   )
 }
 
-// Create RGB strip component
+// Create RGB strip component with enhanced colors
 const RGBStrip = ({
   position,
   rotation = [0, 0, 0],
@@ -127,6 +168,7 @@ const RGBStrip = ({
         const t = state.clock.getElapsedTime() * 2 + i * 0.2
         const colorIndex = Math.floor((t * 0.5) % colors.length)
         ref.material.emissive.set(colors[colorIndex])
+        ref.material.emissiveIntensity = 2 + Math.sin(state.clock.getElapsedTime() + i * 0.2) * 0.5
       }
     })
   })
@@ -143,7 +185,7 @@ const RGBStrip = ({
           <meshStandardMaterial
             color="#333333"
             emissive={colors[i % colors.length]}
-            emissiveIntensity={1}
+            emissiveIntensity={2}
             toneMapped={false}
           />
         </mesh>
@@ -152,7 +194,7 @@ const RGBStrip = ({
   )
 }
 
-// Create a gaming PC with RGB components
+// Create a gaming PC with RGB components that matches the image
 const GamingPC = ({ position }) => {
   const purpleColors = ["#9d4edd", "#c77dff", "#7b2cbf", "#5a189a"]
 
@@ -170,7 +212,7 @@ const GamingPC = ({ position }) => {
         <meshPhysicalMaterial color="#000000" transparent={true} opacity={0.3} roughness={0} metalness={0.8} />
       </mesh>
 
-      {/* RGB Fans - matching the reference image with purple colors */}
+      {/* RGB Fans - matching the image with purple colors */}
       <RGBFan position={[0.6, 1, 1.01]} rotation={[0, 0, 0]} colors={purpleColors} />
       <RGBFan position={[0.6, 0, 1.01]} rotation={[0, 0, 0]} colors={purpleColors} />
       <RGBFan position={[0.6, -1, 1.01]} rotation={[0, 0, 0]} colors={purpleColors} />
@@ -178,9 +220,9 @@ const GamingPC = ({ position }) => {
   )
 }
 
-// Create RGB keyboard with red and green keys as shown in the reference image
+// Create RGB keyboard with improved red and green keys as shown in the image
 const RGBKeyboard = ({ position }) => {
-  const keyColors = ["#ff0000", "#00ff00"] // Red and green as shown in the reference
+  const keyColors = ["#ff0000", "#00ff00", "#0000ff", "#c77dff"] // Red, green, blue, and purple
   const keys = useRef([])
 
   useFrame((state) => {
@@ -189,10 +231,10 @@ const RGBKeyboard = ({ position }) => {
       if (key) {
         const t = state.clock.getElapsedTime() * 2
         const wave = Math.sin(t + i * 0.2) * 0.5 + 0.5
-        // Alternate between red and green for keys
-        const colorIndex = i % 2
+        // More dynamic color assignment to match the image
+        const colorIndex = i % keyColors.length
         key.material.emissive.set(keyColors[colorIndex])
-        key.material.emissiveIntensity = wave
+        key.material.emissiveIntensity = wave * 2
       }
     })
   })
@@ -205,7 +247,7 @@ const RGBKeyboard = ({ position }) => {
         <meshStandardMaterial color="#111111" />
       </mesh>
 
-      {/* Keys - create a grid of small cubes with red and green colors */}
+      {/* Keys - create a grid of small cubes with RGB colors */}
       {Array.from({ length: 6 }).map((_, row) =>
         Array.from({ length: 15 }).map((_, col) => (
           <mesh
@@ -220,8 +262,8 @@ const RGBKeyboard = ({ position }) => {
             <boxGeometry args={[0.15, 0.05, 0.12]} />
             <meshStandardMaterial
               color="#222222"
-              emissive={keyColors[(row + col) % 2]} // Alternate red and green
-              emissiveIntensity={0.8}
+              emissive={keyColors[(row + col) % keyColors.length]} 
+              emissiveIntensity={1.5}
               toneMapped={false}
             />
           </mesh>
@@ -231,7 +273,7 @@ const RGBKeyboard = ({ position }) => {
   )
 }
 
-// Create RGB speakers with purple lighting
+// Create RGB speakers with enhanced purple lighting
 const RGBSpeaker = ({ position, scale = 1, colors = ["#9d4edd", "#c77dff", "#7b2cbf", "#5a189a"] }) => {
   const ring = useRef()
 
@@ -239,6 +281,7 @@ const RGBSpeaker = ({ position, scale = 1, colors = ["#9d4edd", "#c77dff", "#7b2
     if (ring.current) {
       const colorIndex = Math.floor((state.clock.getElapsedTime() * 0.2) % colors.length)
       ring.current.material.emissive.set(colors[colorIndex])
+      ring.current.material.emissiveIntensity = 2 + Math.sin(state.clock.getElapsedTime()) * 0.5
     }
   })
 
@@ -259,7 +302,7 @@ const RGBSpeaker = ({ position, scale = 1, colors = ["#9d4edd", "#c77dff", "#7b2
       {/* RGB ring around speaker */}
       <mesh ref={ring} position={[0, 0, 0.41]}>
         <torusGeometry args={[0.3, 0.03, 16, 32]} />
-        <meshStandardMaterial color="#333333" emissive={colors[0]} emissiveIntensity={1} toneMapped={false} />
+        <meshStandardMaterial color="#333333" emissive={colors[0]} emissiveIntensity={2} toneMapped={false} />
       </mesh>
     </group>
   )
@@ -288,7 +331,7 @@ const GamingSetup = ({ isMobile }) => {
         <meshStandardMaterial color="#0a0a0a" />
       </mesh>
 
-      {/* RGB Strip on desk edge - matching the reference image */}
+      {/* RGB Strip on desk edge - matching the image */}
       <RGBStrip
         position={[0, -0.6, 2.45]}
         rotation={[0.1, 0, 0]}
@@ -297,7 +340,7 @@ const GamingSetup = ({ isMobile }) => {
         colors={["#9d4edd", "#c77dff", "#7b2cbf", "#5a189a"]}
       />
 
-      {/* Ultrawide Monitor - matching the reference image */}
+      {/* Ultrawide Monitor - matching the image */}
       <group position={[0, 1, 0]}>
         {/* Monitor Frame */}
         <mesh castShadow>
@@ -308,7 +351,7 @@ const GamingSetup = ({ isMobile }) => {
         {/* Monitor Screen */}
         <mesh position={[0, 0, 0.06]}>
           <boxGeometry args={[3.9, 2.1, 0.01]} />
-          <meshBasicMaterial color="#1e1e1e" /> {/* VS Code dark theme background */}
+          <meshBasicMaterial color="#1e1e1e" />
         </mesh>
 
         {/* Code on screen */}
@@ -329,7 +372,7 @@ const GamingSetup = ({ isMobile }) => {
         </mesh>
       </group>
 
-      {/* RGB Keyboard with red and green keys as in the reference */}
+      {/* RGB Keyboard with red and green keys as in the image */}
       <RGBKeyboard position={[0, -0.3, 1.5]} />
 
       {/* RGB Speakers with purple lighting */}
@@ -344,7 +387,13 @@ const GamingSetup = ({ isMobile }) => {
 
 const CustomComputerCanvas = ({ isMobile }) => {
   return (
-    <Canvas frameloop="demand" shadows camera={{ position: [0, 0, 15], fov: 25 }} gl={{ preserveDrawingBuffer: true }}>
+    <Canvas 
+      frameloop="demand" 
+      shadows 
+      camera={{ position: [0, 0, 15], fov: 25 }} 
+      gl={{ preserveDrawingBuffer: true, antialias: true }}
+      dpr={[1, 2]} // Improve rendering quality
+    >
       <color attach="background" args={["#050510"]} />
 
       <Suspense fallback={<CanvasLoader />}>
@@ -356,13 +405,26 @@ const CustomComputerCanvas = ({ isMobile }) => {
           minAzimuthAngle={-Math.PI / 4}
         />
 
-        {/* Lighting to match the purple ambient glow in the reference image */}
-        <ambientLight intensity={0.2} />
-        <directionalLight position={[-5, 5, 5]} intensity={0.5} castShadow shadow-mapSize={1024} />
-        <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={0.8} castShadow shadow-mapSize={1024} />
-        <pointLight position={[0, 5, 0]} intensity={0.5} color="#9d4edd" />
-        <pointLight position={[4, 2, 0]} intensity={0.8} color="#c77dff" />
-        <pointLight position={[-4, 2, 0]} intensity={0.8} color="#7b2cbf" />
+        {/* Enhanced lighting to match the purple ambient glow in the image */}
+        <ambientLight intensity={0.3} />
+        <directionalLight position={[-5, 5, 5]} intensity={0.4} castShadow shadow-mapSize={1024} />
+        <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={0.6} castShadow shadow-mapSize={1024} />
+        
+        {/* Purple accent lights to create the purple glow effect */}
+        <pointLight position={[0, 5, 0]} intensity={0.8} color="#9d4edd" distance={15} decay={2} />
+        <pointLight position={[4, 2, 0]} intensity={1.2} color="#c77dff" distance={10} decay={2} />
+        <pointLight position={[-4, 2, 0]} intensity={1.2} color="#7b2cbf" distance={10} decay={2} />
+        
+        {/* Additional spotlights for better illumination of the setup */}
+        <spotLight 
+          position={[-2, 3, 5]} 
+          angle={0.5} 
+          penumbra={0.8} 
+          intensity={0.8} 
+          color="#a594f9" 
+          castShadow 
+          shadow-mapSize={1024} 
+        />
 
         {/* Gaming Setup */}
         <GamingSetup isMobile={isMobile} />

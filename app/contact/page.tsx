@@ -294,7 +294,7 @@ export default function ContactPage() {
                         href="mailto:contact@example.com"
                         className="text-muted-foreground hover:text-primary transition-colors"
                       >
-                        contact@example.com
+                        olanikegloria2020.com
                       </a>
                     ),
                   },
@@ -302,15 +302,15 @@ export default function ContactPage() {
                     icon: <Phone className="h-5 w-5 text-primary" />,
                     title: "Phone",
                     content: (
-                      <a href="tel:+15551234567" className="text-muted-foreground hover:text-primary transition-colors">
-                        +1 (555) 123-4567
+                      <a href="tel:+2349116185832" className="text-muted-foreground hover:text-primary transition-colors">
+                        +(234)9116185832
                       </a>
                     ),
                   },
                   {
                     icon: <MapPin className="h-5 w-5 text-primary" />,
                     title: "Location",
-                    content: <p className="text-muted-foreground">San Francisco, CA</p>,
+                    content: <p className="text-muted-foreground">Lagos, Nigeria</p>,
                   },
                 ].map((item, index) => (
                   <motion.div
