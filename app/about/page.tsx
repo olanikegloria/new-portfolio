@@ -15,14 +15,14 @@ const education = [
   {
     degree: "Computer Software Engineering",
     institution: "Microverse",
-    period: "Sept 2022 - March 2024",
+    period: "",
     description:
       "Focused on Data Structures & Algorithms, Objects & Design, Computer Organization & Programming, Object-Oriented Programming, Databases & Storage, Testing & Deployment, Version control, Error Handling.",
   },
   {
     degree: "BENG in Electrical/Electronics Engineering",
     institution: "Bells University of Technology",
-    period: "Sept 2019 - June 2024",
+    period: "",
     description:
       "GPA: 4.82/5.00, Dean's List. Focused on Microprocessor Architecture and Programming, Machine Learning, Computer Logics, Microsoft Server, Object-Oriented Programming, Signals & Systems Analysis, Control systems, Operations Research.",
   },
